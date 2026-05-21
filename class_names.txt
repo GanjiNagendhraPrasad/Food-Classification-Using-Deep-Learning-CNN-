@@ -1,0 +1,34 @@
+Fries
+ice_cream
+fried_rice
+apple_pie
+sushi
+momos
+dal_makhani
+Donut
+chicken_curry
+omelette
+Taquito
+dhokla
+masala_dosa
+butter_naan
+jalebi
+pakode
+Hot Dog
+cheesecake
+chai
+kaathi_rolls
+samosa
+Taco
+Crispy Chicken
+chole_bhature
+kulfi
+burger
+paani_puri
+pav_bhaji
+Sandwich
+kadai_paneer
+chapati
+Baked Potato
+idli
+pizza

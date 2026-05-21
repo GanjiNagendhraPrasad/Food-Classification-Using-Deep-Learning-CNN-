@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Food Classification AI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Inter',sans-serif;
+background:#060816;
+color:white;
+overflow-x:hidden;
+min-height:100vh;
+}
+
+/* ========================= */
+
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at top left,#8b5cf633,transparent 30%),
+radial-gradient(circle at bottom right,#06b6d433,transparent 30%),
+linear-gradient(135deg,#050816,#0f172a);
+z-index:-1;
+}
+
+/* ========================= */
+
+.container{
+max-width:1500px;
+margin:auto;
+padding:30px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px;
+}
+
+.logo{
+font-size:34px;
+font-weight:900;
+background:linear-gradient(90deg,#8b5cf6,#06b6d4);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.subtitle{
+margin-top:6px;
+color:#94a3b8;
+font-size:14px;
+}
+
+/* ========================= */
+
+.layout{
+display:grid;
+grid-template-columns:260px 1fr 320px;
+gap:25px;
+}
+
+/* ========================= */
+
+.card{
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,0.08);
+border-radius:28px;
+padding:24px;
+box-shadow:
+0 10px 40px rgba(0,0,0,0.3);
+}
+
+/* ========================= */
+/* PROFILE */
+/* ========================= */
+
+.profile-card{
+text-align:center;
+}
+
+.avatar{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+border:4px solid #8b5cf6;
+margin-bottom:18px;
+}
+
+.profile-name{
+font-size:24px;
+font-weight:800;
+}
+
+.profile-role{
+margin-top:6px;
+color:#94a3b8;
+}
+
+.divider{
+height:1px;
+background:rgba(255,255,255,0.08);
+margin:20px 0;
+border:none;
+}
+
+.section-title{
+font-size:13px;
+font-weight:700;
+letter-spacing:2px;
+color:#06b6d4;
+margin-bottom:18px;
+text-transform:uppercase;
+}
+
+.stat{
+display:flex;
+justify-content:space-between;
+margin-bottom:14px;
+font-size:14px;
+}
+
+.stat span:last-child{
+color:#06b6d4;
+font-weight:700;
+}
+
+/* ========================= */
+/* UPLOAD */
+/* ========================= */
+
+.upload-zone{
+border:2px dashed #334155;
+border-radius:25px;
+padding:60px 20px;
+text-align:center;
+cursor:pointer;
+transition:0.3s;
+position:relative;
+overflow:hidden;
+}
+
+.upload-zone:hover{
+border-color:#8b5cf6;
+background:rgba(139,92,246,0.08);
+}
+
+.upload-zone input{
+position:absolute;
+inset:0;
+opacity:0;
+cursor:pointer;
+}
+
+.upload-icon{
+font-size:60px;
+margin-bottom:15px;
+}
+
+.upload-text{
+font-size:16px;
+color:#cbd5e1;
+}
+
+.upload-text strong{
+color:#8b5cf6;
+}
+
+#preview-wrap{
+display:none;
+margin-top:24px;
+text-align:center;
+}
+
+#preview-img{
+width:100%;
+max-height:320px;
+object-fit:cover;
+border-radius:20px;
+}
+
+#file-name{
+margin-top:10px;
+color:#94a3b8;
+font-size:13px;
+}
+
+/* ========================= */
+/* MODEL GRID */
+/* ========================= */
+
+.model-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:18px;
+}
+
+.model-btn{
+background:rgba(255,255,255,0.04);
+border:1px solid rgba(255,255,255,0.08);
+border-radius:20px;
+padding:22px 10px;
+cursor:pointer;
+transition:0.3s;
+text-align:center;
+color:white;
+}
+
+.model-btn:hover{
+transform:translateY(-5px);
+border-color:#8b5cf6;
+}
+
+.model-btn.active{
+background:linear-gradient(
+135deg,
+rgba(139,92,246,0.22),
+rgba(6,182,212,0.18)
+);
+
+border-color:#8b5cf6;
+}
+
+.model-icon{
+font-size:38px;
+margin-bottom:10px;
+}
+
+.model-name{
+font-weight:700;
+font-size:15px;
+}
+
+.model-acc{
+margin-top:8px;
+font-size:12px;
+color:#94a3b8;
+}
+
+/* ========================= */
+/* BUTTON */
+/* ========================= */
+
+#predict-btn{
+width:100%;
+padding:18px;
+border:none;
+border-radius:22px;
+font-size:18px;
+font-weight:800;
+cursor:pointer;
+background:linear-gradient(90deg,#8b5cf6,#06b6d4);
+color:white;
+transition:0.3s;
+}
+
+#predict-btn:hover{
+transform:translateY(-3px);
+box-shadow:0 12px 30px rgba(139,92,246,0.35);
+}
+
+#predict-btn:disabled{
+opacity:0.6;
+cursor:not-allowed;
+}
+
+.btn-spinner{
+display:none;
+width:20px;
+height:20px;
+border:3px solid rgba(255,255,255,0.3);
+border-top-color:white;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin:auto;
+}
+
+.btn-spinner.show{
+display:block;
+}
+
+@keyframes spin{
+to{
+transform:rotate(360deg);
+}
+}
+
+/* ========================= */
+/* RESULT */
+/* ========================= */
+
+#result-panel{
+display:none;
+}
+
+.result-label{
+font-size:40px;
+font-weight:900;
+background:linear-gradient(90deg,#8b5cf6,#06b6d4);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.result-model-tag{
+margin-top:8px;
+color:#94a3b8;
+font-size:13px;
+}
+
+.conf-wrap{
+margin-top:24px;
+}
+
+.conf-top{
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+font-size:14px;
+}
+
+.conf-track{
+height:10px;
+background:#1e293b;
+border-radius:30px;
+overflow:hidden;
+}
+
+.conf-fill{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#8b5cf6,#06b6d4);
+transition:1s;
+}
+
+/* ========================= */
+/* METRICS */
+/* ========================= */
+
+.metrics-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px;
+margin-top:24px;
+}
+
+.metric-cell{
+background:rgba(255,255,255,0.04);
+padding:20px;
+border-radius:20px;
+text-align:center;
+}
+
+.metric-val{
+font-size:28px;
+font-weight:800;
+color:#06b6d4;
+}
+
+.metric-label{
+margin-top:8px;
+font-size:13px;
+color:#94a3b8;
+}
+
+/* ========================= */
+/* NUTRITION */
+/* ========================= */
+
+.nutrition-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px;
+}
+
+.nut-card{
+background:rgba(255,255,255,0.04);
+padding:20px;
+border-radius:20px;
+text-align:center;
+}
+
+.nutrition-value{
+font-size:26px;
+font-weight:800;
+color:#8b5cf6;
+}
+
+.nutrition-label{
+margin-top:8px;
+font-size:13px;
+color:#94a3b8;
+}
+
+/* ========================= */
+
+.top5-item{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:14px;
+}
+
+.top5-name{
+flex:1;
+}
+
+.top5-bar{
+height:8px;
+background:#1e293b;
+border-radius:20px;
+overflow:hidden;
+flex:1;
+}
+
+.top5-fill{
+height:100%;
+background:linear-gradient(90deg,#8b5cf6,#06b6d4);
+}
+
+/* ========================= */
+
+.error-msg{
+display:none;
+margin-top:20px;
+padding:16px;
+border-radius:16px;
+background:#7f1d1d;
+color:#fecaca;
+}
+
+/* ========================= */
+
+@media(max-width:1100px){
+
+.layout{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<div>
+<div class="logo">
+Food Classification USING DEEP LEARNING CNN
+</div>
+
+<div class="subtitle">
+Deep Learning · CNN · VGG16 · ResNet-50
+</div>
+</div>
+
+</div>
+
+<div class="layout">
+
+<!-- LEFT -->
+
+<div class="card profile-card">
+
+<img src="../static/pp.png" class="avatar">
+
+<div class="profile-name">
+G. Nagendhra Prasad
+</div>
+
+<div class="profile-role">
+ML / DL Engineer
+</div>
+
+<hr class="divider">
+
+<div class="section-title">
+Project Stats
+</div>
+
+<div class="stat">
+<span>Food Classes</span>
+<span>34</span>
+</div>
+
+<div class="stat">
+<span>Models</span>
+<span>3</span>
+</div>
+
+<div class="stat">
+<span>Best Accuracy</span>
+<span>72.1%</span>
+</div>
+
+<div class="stat">
+<span>Backend</span>
+<span>Flask + Redis</span>
+</div>
+
+</div>
+
+<!-- CENTER -->
+
+<div>
+
+<!-- Upload -->
+
+<div class="card">
+
+<div class="section-title">
+Upload Food Image
+</div>
+
+<div class="upload-zone" id="upload-zone">
+
+<input type="file" id="file-input" accept="image/*">
+
+<div class="upload-icon">
+🍔
+</div>
+
+<div class="upload-text">
+Drag & Drop or <strong>Browse</strong> Image
+</div>
+
+</div>
+
+<div id="preview-wrap">
+<img id="preview-img">
+<div id="file-name"></div>
+</div>
+
+</div>
+
+<!-- Models -->
+
+<div class="card" style="margin-top:24px;">
+
+<div class="section-title">
+Select Model
+</div>
+
+<div class="model-grid">
+
+<button class="model-btn active" data-model="custom_cnn">
+
+<div class="model-icon">🧠</div>
+
+<div class="model-name">
+Custom CNN
+</div>
+
+<div class="model-acc">
+49.4%
+</div>
+
+</button>
+
+<button class="model-btn" data-model="vgg16">
+
+<div class="model-icon">🏗️</div>
+
+<div class="model-name">
+VGG16
+</div>
+
+<div class="model-acc">
+67.3%
+</div>
+
+</button>
+
+<button class="model-btn" data-model="resnet50">
+
+<div class="model-icon">🔗</div>
+
+<div class="model-name">
+ResNet50
+</div>
+
+<div class="model-acc">
+72.1%
+</div>
+
+</button>
+
+</div>
+
+</div>
+
+<!-- Predict -->
+
+<div class="card" style="margin-top:24px;">
+
+<button id="predict-btn">
+
+<span id="btn-text">
+⚡ Predict Food
+</span>
+
+<div class="btn-spinner" id="btn-spinner"></div>
+
+</button>
+
+<div class="error-msg" id="error-msg"></div>
+
+</div>
+
+<!-- Result -->
+
+<div class="card" id="result-panel" style="margin-top:24px;">
+
+<div class="section-title">
+Prediction Result
+</div>
+
+<div class="result-label" id="result-label">
+—
+</div>
+
+<div class="result-model-tag" id="result-model-tag"></div>
+
+<div class="conf-wrap">
+
+<div class="conf-top">
+<span>Confidence</span>
+<span id="conf-pct">0%</span>
+</div>
+
+<div class="conf-track">
+<div class="conf-fill" id="conf-bar"></div>
+</div>
+
+</div>
+
+<div class="metrics-grid">
+
+<div class="metric-cell">
+<div class="metric-val" id="m-confidence">—</div>
+<div class="metric-label">Confidence</div>
+</div>
+
+<div class="metric-cell">
+<div class="metric-val" id="m-accuracy">—</div>
+<div class="metric-label">Accuracy</div>
+</div>
+
+<div class="metric-cell">
+<div class="metric-val" id="m-precision">—</div>
+<div class="metric-label">Precision</div>
+</div>
+
+<div class="metric-cell">
+<div class="metric-val" id="m-f1">—</div>
+<div class="metric-label">F1 Score</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- RIGHT -->
+
+<div class="card">
+
+<div class="section-title">
+Nutrition
+</div>
+
+<div id="nutrition-content"></div>
+
+<hr class="divider">
+
+<div class="section-title">
+Top 5 Predictions
+</div>
+
+<div id="top5-list"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* ===================================== */
+
+let selectedModel = 'custom_cnn';
+let selectedFile = null;
+
+/* ===================================== */
+/* MODEL BUTTONS */
+/* ===================================== */
+
+document.querySelectorAll('.model-btn').forEach(btn=>{
+
+btn.addEventListener('click',()=>{
+
+document.querySelectorAll('.model-btn')
+.forEach(b=>b.classList.remove('active'));
+
+btn.classList.add('active');
+
+selectedModel = btn.dataset.model;
+
+});
+
+});
+
+/* ===================================== */
+/* FILE */
+/* ===================================== */
+
+const fileInput = document.getElementById('file-input');
+
+fileInput.addEventListener('change',(e)=>{
+
+const file = e.target.files[0];
+
+if(!file) return;
+
+selectedFile = file;
+
+document.getElementById('preview-wrap').style.display='block';
+
+document.getElementById('preview-img').src =
+URL.createObjectURL(file);
+
+document.getElementById('file-name').textContent =
+file.name;
+
+});
+
+/* ===================================== */
+/* PREDICT */
+/* ===================================== */
+
+document.getElementById('predict-btn')
+.addEventListener('click',async()=>{
+
+if(!selectedFile){
+
+showError('Please upload image');
+
+return;
+
+}
+
+hideError();
+
+setLoading(true);
+
+const fd = new FormData();
+
+fd.append('image',selectedFile);
+
+fd.append('model',selectedModel);
+
+try{
+
+const res = await fetch('/predict',{
+
+method:'POST',
+body:fd
+
+});
+
+const data = await res.json();
+
+if(!res.ok){
+
+throw new Error(data.error || 'Prediction failed');
+
+}
+
+renderResult(data);
+
+}catch(err){
+
+showError(err.message);
+
+}
+
+finally{
+
+setLoading(false);
+
+}
+
+});
+
+/* ===================================== */
+/* RENDER */
+/* ===================================== */
+
+function renderResult(data){
+
+document.getElementById('result-panel').style.display='block';
+
+document.getElementById('result-label').textContent =
+data.predicted_label.replace(/_/g,' ');
+
+document.getElementById('result-model-tag').textContent =
+'Model : ' + data.model_used.toUpperCase();
+
+const pct = Number(data.confidence).toFixed(1);
+
+document.getElementById('conf-pct').textContent =
+pct + '%';
+
+setTimeout(()=>{
+
+document.getElementById('conf-bar').style.width =
+pct + '%';
+
+},100);
+
+/* metrics */
+
+document.getElementById('m-confidence').textContent =
+pct + '%';
+
+document.getElementById('m-accuracy').textContent =
+data.metrics.accuracy + '%';
+
+document.getElementById('m-precision').textContent =
+data.metrics.precision + '%';
+
+document.getElementById('m-f1').textContent =
+data.metrics.f1 + '%';
+
+/* nutrition */
+
+const nut = data.nutrition;
+
+const nutritionContent =
+document.getElementById('nutrition-content');
+
+if(nut){
+
+nutritionContent.innerHTML = `
+<div class="nutrition-grid">
+
+<div class="nut-card">
+<div class="nutrition-value">${nut.calories || 0}</div>
+<div class="nutrition-label">Calories</div>
+</div>
+
+<div class="nut-card">
+<div class="nutrition-value">${nut.protein || 0}</div>
+<div class="nutrition-label">Protein</div>
+</div>
+
+<div class="nut-card">
+<div class="nutrition-value">${nut.carbs || 0}</div>
+<div class="nutrition-label">Carbs</div>
+</div>
+
+<div class="nut-card">
+<div class="nutrition-value">${nut.fats || 0}</div>
+<div class="nutrition-label">Fats</div>
+</div>
+
+<div class="nut-card">
+<div class="nutrition-value">${nut.fiber || 0}</div>
+<div class="nutrition-label">Fiber</div>
+</div>
+
+</div>
+`;
+
+}
+
+/* top5 */
+
+document.getElementById('top5-list').innerHTML =
+(data.top5 || []).map((item,i)=>`
+
+<div class="top5-item">
+
+<div>#${i+1}</div>
+
+<div class="top5-name">
+${item.label.replace(/_/g,' ')}
+</div>
+
+<div class="top5-bar">
+<div class="top5-fill"
+style="width:${item.confidence}%"></div>
+</div>
+
+<div>
+${item.confidence.toFixed(1)}%
+</div>
+
+</div>
+
+`).join('');
+
+}
+
+/* ===================================== */
+
+function setLoading(on){
+
+document.getElementById('predict-btn').disabled = on;
+
+document.getElementById('btn-text').style.display =
+on ? 'none' : 'inline';
+
+document.getElementById('btn-spinner')
+.classList.toggle('show',on);
+
+}
+
+function showError(msg){
+
+const el = document.getElementById('error-msg');
+
+el.textContent = msg;
+
+el.style.display='block';
+
+}
+
+function hideError(){
+
+document.getElementById('error-msg').style.display='none';
+
+}
+
+</script>
+
+</body>
+</html>
