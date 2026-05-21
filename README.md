@@ -90,3 +90,171 @@ The application can classify **34 different food categories** using multiple dee
 🔴 Redis Nutrition Retrieval
         ↓
 🍽 Final Prediction + Nutrition Data
+
+<!-- ====================================================== -->
+<!-- 🔴 REDIS DATABASE WORKFLOW -->
+<!-- ====================================================== -->
+
+<h1 align="center">🔴 Redis Database Workflow</h1>
+
+<div align="center">
+
+<table>
+<tr>
+<td align="center">📄 food_nutrition.json</td>
+</tr>
+
+<tr>
+<td align="center">⬇️</td>
+</tr>
+
+<tr>
+<td align="center">🐍 Python Redis Integration</td>
+</tr>
+
+<tr>
+<td align="center">⬇️</td>
+</tr>
+
+<tr>
+<td align="center">🔴 Redis Database Storage</td>
+</tr>
+
+<tr>
+<td align="center">⬇️</td>
+</tr>
+
+<tr>
+<td align="center">🌐 Flask Backend Retrieval</td>
+</tr>
+
+<tr>
+<td align="center">⬇️</td>
+</tr>
+
+<tr>
+<td align="center">🍽 Nutrition Data Display In UI</td>
+</tr>
+
+</table>
+
+</div>
+
+<br><br>
+
+<!-- ====================================================== -->
+<!-- 🍔 SUPPORTED FOOD CLASSES -->
+<!-- ====================================================== -->
+
+<h1 align="center">🍔 Supported Food Classes</h1>
+
+<h3 align="center">Total Classes : 34</h3>
+
+<div align="center">
+
+<table>
+<tr>
+<td>🍎 apple_pie</td>
+<td>🥔 Baked Potato</td>
+<td>🍔 burger</td>
+</tr>
+
+<tr>
+<td>🫓 butter_naan</td>
+<td>☕ chai</td>
+<td>🫓 chapati</td>
+</tr>
+
+<tr>
+<td>🍰 cheesecake</td>
+<td>🍛 chicken_curry</td>
+<td>🥘 chole_bhature</td>
+</tr>
+
+<tr>
+<td>🍗 Crispy Chicken</td>
+<td>🍲 dal_makhani</td>
+<td>🥟 dhokla</td>
+</tr>
+
+<tr>
+<td>🍩 Donut</td>
+<td>🍚 fried_rice</td>
+<td>🍟 Fries</td>
+</tr>
+
+<tr>
+<td>🌭 Hot Dog</td>
+<td>🍨 ice_cream</td>
+<td>🍘 idli</td>
+</tr>
+
+<tr>
+<td>🍬 jalebi</td>
+<td>🌯 kaathi_rolls</td>
+<td>🍛 kadai_paneer</td>
+</tr>
+
+<tr>
+<td>🍦 kulfi</td>
+<td>🥞 masala_dosa</td>
+<td>🥟 momos</td>
+</tr>
+
+<tr>
+<td>🍳 omelette</td>
+<td>🥙 paani_puri</td>
+<td>🥟 pakode</td>
+</tr>
+
+<tr>
+<td>🍲 pav_bhaji</td>
+<td>🍕 pizza</td>
+<td>🥟 samosa</td>
+</tr>
+
+<tr>
+<td>🥪 Sandwich</td>
+<td>🍣 sushi</td>
+<td>🌮 Taco</td>
+</tr>
+
+<tr>
+<td>🌯 Taquito</td>
+<td></td>
+<td></td>
+</tr>
+
+</table>
+
+</div>
+
+<br><br>
+
+<!-- ====================================================== -->
+<!-- 📂 PROJECT STRUCTURE -->
+<!-- ====================================================== -->
+
+<h1 align="center">📂 Project Structure</h1>
+
+```text
+📦 Food_Classification_Using_Deep_Learning_CNN
+│
+├── 📁 static/
+│   └── 🖼 pp.png
+│
+├── 📁 templates/
+│   └── 🌐 index.html
+│
+├── 🐍 app.py
+├── 🐍 send_to_redis.py
+├── 🐍 get_from_redis.py
+│
+├── 📄 class_names.txt
+├── 📄 food_nutrition.json
+├── 📄 requirements.txt
+├── 📄 Procfile
+│
+├── 🤖 food_classification_weights.weights.h5
+├── 🤖 vgg16_food_classification_weights.weights.h5
+└── 🤖 resnet50_food_classification_weights.weights.h5
