@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/GanjiNagendhraPrasad/Food-Classification-Using-Deep-Learning-CNN-/main/static/pp.png" width="190" style="border-radius:50%;" />
-
 # 🍔 Food Classification Using Deep Learning CNN
 
 ### 🚀 Deep Learning • Computer Vision • Flask • Redis • Transfer Learning
